@@ -10,21 +10,25 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 import { getProperty } from "@/lib/api/properties";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 
 const PropertyDetailPage = async ({ params }) => {
   const { id } = await params;
 
   const property = await getProperty(id);
-  //   const session = await auth.api.getSession({
-  //     headers: await headers(),
-  //   });
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-  //   if (!session) {
-  //     redirect("/login");
-  //   }
+  if (!session) {
+    redirect("/login");
+  }
   return (
     <div>
-      <h1>Property Detail Page</h1>
+      <h1 className="text-3xl font-bold text-center text-gray-800">
+        Property Detail Page
+      </h1>
 
       <section className="bg-slate-50 min-h-screen py-10">
         <div className="container mx-auto px-4">
@@ -35,7 +39,7 @@ const PropertyDetailPage = async ({ params }) => {
               alt={property.propertyTitle}
               width={1400}
               height={700}
-              className="h-[300px] md:h-[500px] w-full object-cover"
+              className=" h-[300px] md:h-[500px] w-full object-cover"
             />
           </div>
 

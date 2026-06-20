@@ -9,7 +9,7 @@ export const getProperties = async () => {
 };
 
 export const getProperty = async (id) => {
-  const response = await fetch(`${baseUrl}/properties/${id}`);
+  const response = await fetch(`${baseUrl}/api/properties/${id}`);
   const data = await response.json();
 
   return data;
