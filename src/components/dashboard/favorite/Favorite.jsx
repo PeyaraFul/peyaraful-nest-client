@@ -10,6 +10,7 @@ import {
   FaBath,
   FaTrash,
 } from "react-icons/fa6";
+import { getProperty } from "@/lib/api/properties";
 
 export default function FavoriteTable({
   favorites = [],
@@ -92,9 +93,10 @@ export default function FavoriteTable({
                         <div className="flex items-center gap-4">
                           <div className="relative h-20 w-28 overflow-hidden rounded-2xl">
                             <Image
+                              height="300"
+                              width="300"
                               src={favorite.propertyImage}
                               alt={favorite.propertyName}
-                              fill
                               className="object-cover"
                             />
                           </div>
