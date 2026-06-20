@@ -9,9 +9,10 @@ import { FcGoogle } from "react-icons/fc";
 import { CiUnlock } from "react-icons/ci";
 import { Description, Label, Radio, RadioGroup } from "@heroui/react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function LoginPage() {
-  const [value, setValue] = useState("job-seeker");
+export default function RegisterPage() {
+  // const [value, setValue] = useState("job-seeker");
   // console.log('value', value);
 
   const {
@@ -20,25 +21,35 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm();
 
+   const router = useRouter();
+
+  
   const onSubmit = async (data) => {
-    const { name, email, password, } = data;
+    try {
+      const { name, email, photoUrl, password } = data;
 
-    const { data: res, error } = await authClient.signUp.email({
-      name,
-      email,
-      password,
-      role: value,
+      const { data: res, error } = await authClient.signUp.email({
+        name,
+        email,
+        image: photoUrl,
+        password,
+        callbackURL: "/",
+      });
 
-      callbackURL: "/",
-    });
-    // console.log(name, email, password, role);
+      if (error) {
+       
+        alert(error.message || "Registration failed");
+        return;
+      }
 
-    if (error) {
-      console.log(error);
-      return;
+      console.log(res);
+
+      // Redirect to home page
+      router.push("/");
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong. Please try again.");
     }
-
-    console.log(res);
   };
 
   return (
@@ -103,6 +114,29 @@ export default function LoginPage() {
             )}
           </div>
 
+
+
+
+
+          {/* photo link */}
+          <div>
+            <label className="mb-2 block text-sm text-gray-300">Photo link</label>
+
+            <div className="flex items-center rounded-xl border border-white/10 bg-white/5 px-4">
+              {/* <Envelope className="h-5 w-5 text-gray-400" /> */}
+
+              <input
+                type="url"
+                placeholder="Enter your photo link"
+                className="w-full bg-transparent px-3 py-3 text-white outline-none"
+                {...register("photoUrl")}
+              />
+            </div>
+
+
+          </div>
+
+
           {/* Password */}
           <div>
             <label className="mb-2 block text-sm text-gray-300">Password</label>
@@ -132,7 +166,7 @@ export default function LoginPage() {
           </div>
 
           {/* Role selection */}
-          <div className="flex flex-col gap-4">
+          {/* <div className="flex flex-col gap-4">
             <Label>Select Role</Label>
             <RadioGroup defaultValue="job-seeker" orientation="horizontal"
               value={value}
@@ -158,14 +192,14 @@ export default function LoginPage() {
               </Radio>
 
             </RadioGroup>
-          </div>
+          </div> */}
 
           {/* Submit Button */}
           <button
             type="submit"
             className="cursor-pointer w-full rounded-xl bg-violet-600 py-3 font-semibold text-white transition hover:bg-violet-700"
           >
-            Sign In
+            Create Account
           </button>
         </form>
 

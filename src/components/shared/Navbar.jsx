@@ -5,12 +5,15 @@ import Link from "next/link";
 import { Button } from "@heroui/react";
 import { HiBars3, HiXMark } from "react-icons/hi2";
 import { FaHouseChimney } from "react-icons/fa6";
+import { authClient, useSession } from "@/lib/auth-client";
 
 export default function NavbarComponent() {
     const [isOpen, setIsOpen] = useState(false);
 
     // Replace with your auth logic
-    const user = null;
+   const { data: session } = authClient.useSession()
+   console.log(session);
+    const user = 'akash' ;
 
     const links = [
         {
@@ -63,34 +66,34 @@ export default function NavbarComponent() {
                 <div className="hidden items-center gap-3 md:flex">
                     {!user ? (
                         <>
-                            <Button
-                                as={Link}
+                            <Link
+                          
                                 href="/login"
                                 variant="light"
                             >
                                 Login
-                            </Button>
+                            </Link>
 
-                            <Button
-                                as={Link}
+                            <Link
+                           
                                 href="/register"
                                 color="primary"
                                 radius="full"
                             >
-                                Register
-                            </Button>
+                                register
+                            </Link>
                         </>
                     ) : (
                         <>
-                            <Button
-                                as={Link}
+                            <Link
+                      
                                 href="/dashboard"
                                 variant="flat"
                                 color="primary"
                                 radius="full"
                             >
                                 Dashboard
-                            </Button>
+                            </Link>
 
                             <Button
                                 color="danger"
@@ -138,23 +141,23 @@ export default function NavbarComponent() {
                     <div className="mt-4 border-t border-default-200 pt-4">
                         {!user ? (
                             <div className="space-y-2">
-                                <Button
-                                    as={Link}
+                                <Link
+                                   
                                     href="/login"
                                     variant="light"
                                     className="w-full"
                                 >
                                     Login
-                                </Button>
+                                </Link>
 
-                                <Button
-                                    as={Link}
+                                <Link
+                              
                                     href="/register"
                                     color="primary"
                                     className="w-full"
                                 >
-                                    Register
-                                </Button>
+                                    register
+                                </Link>
                             </div>
                         ) : (
                             <div className="space-y-2">

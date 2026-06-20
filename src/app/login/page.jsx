@@ -1,6 +1,6 @@
 "use client";
 
-// import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { CiUnlock } from "react-icons/ci";
@@ -19,12 +19,24 @@ export default function LoginPage() {
     // console.log("Form Data:", data);
     const { email, password } = data;
 
-    // const { data: res, error } = await authClient.signIn.email({
-    //   email,
-    //   password,
-    //   rememberMe: true,
-    //   callbackURL: "/",
-    // });
+    const { data: res, error } = await authClient.signIn.email({
+      email,
+      password,
+      rememberMe: true,
+      callbackURL: "/",
+    });
+
+    if (error) {
+    alert(error.message || "Login failed");
+    return;
+  }
+
+  alert("Login successful!");
+
+  console.log(res);
+
+
+    
   };
 
   return (
