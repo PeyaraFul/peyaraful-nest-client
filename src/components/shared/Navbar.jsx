@@ -13,7 +13,7 @@ export default function NavbarComponent() {
   // Replace with your auth logic
   const { data: session } = authClient.useSession();
   //    console.log(session);
-  const user = "akash";
+  const user = session?.user;
 
   const links = [
     {
@@ -70,16 +70,25 @@ export default function NavbarComponent() {
           ) : (
             <>
               <Link
-                href="/dashboard"
+                href="/dashboard/overview"
                 variant="flat"
                 color="primary"
                 radius="full"
               >
                 Dashboard
               </Link>
+              <Link
+                href="/login"
+                onClick={async () => await authClient.signOut()}
+                className="btn mx-3 hover:bg-white/10 cursor-pointer"
+              >
+                <button className="w-full text-left px-4 py-2 cursor-pointer hover:bg-white/10 rounded-lg text-red-400">
+                  Logout
+                </button>
+              </Link>
 
               <Button color="danger" variant="light" radius="full">
-                Logout
+                {user?.name}
               </Button>
             </>
           )}

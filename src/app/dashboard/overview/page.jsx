@@ -35,7 +35,7 @@ const RecruiterPage = () => {
   return (
     <div>
       <h1 className="text-3xl font-medium">
-        WellCome back {session.user.name}
+        <StatsGrid items={recruiterStats} />
       </h1>
     </div>
   );
