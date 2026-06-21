@@ -152,12 +152,12 @@ const PropertyDetailPage = async ({ params }) => {
 
                 <div className="flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white font-bold">
-                    {property.ownerInformation.name.charAt(0)}
+                    {property.ownerInformation?.name?.charAt(0)}
                   </div>
 
                   <div>
                     <h4 className="font-semibold">
-                      {property.ownerInformation.name}
+                      {property.ownerInformation?.name}
                     </h4>
 
                     <p className="text-sm text-slate-500">Property Owner</p>
@@ -167,12 +167,12 @@ const PropertyDetailPage = async ({ params }) => {
                 <div className="mt-6 space-y-4">
                   <div className="flex items-center gap-3">
                     <FaPhone />
-                    <span>{property.ownerInformation.phone}</span>
+                    <span>{property.ownerInformation?.phone}</span>
                   </div>
 
                   <div className="flex items-center gap-3">
                     <FaEnvelope />
-                    <span>{property.ownerInformation.email}</span>
+                    <span>{property.ownerInformation?.email}</span>
                   </div>
                 </div>
 

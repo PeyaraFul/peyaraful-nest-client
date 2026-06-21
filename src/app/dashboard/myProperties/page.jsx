@@ -1,5 +1,5 @@
-import FavoriteTable from "@/components/dashboard/favorite/Favorite";
-import { getFavorites } from "@/lib/api/favorites";
+import MyPropertiesTable from "@/components/dashboard/myProperties/MyProperty";
+import { getProperties } from "@/lib/api/properties";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
@@ -8,14 +8,14 @@ export default async function MyBookingsPage() {
     headers: await headers(),
   });
 
-  const tenantId = session?.user?.id;
+  const ownerId = session?.user?.id;
   // console.log("ID", session.user.id);
 
-  const favorites = await getFavorites({ tenantId });
+  const myProperties = await getProperties({ ownerId });
 
   return (
     <div className="mx-auto max-w-7xl p-4 md:p-6">
-      <FavoriteTable favorites={favorites} />
+      <MyPropertiesTable myProperties={myProperties} />
     </div>
   );
 }

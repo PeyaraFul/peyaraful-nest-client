@@ -20,7 +20,10 @@ const PropertyCard = ({ property }) => {
         <Image
           height="300"
           width="300"
-          src={property.image}
+          src={
+            property?.image ||
+            "https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?q=80&w=1200&auto=format&fit=crop"
+          }
           alt={property.propertyTitle}
           className=" h-full w-full object-cover transition duration-500 group-hover:scale-110"
         />

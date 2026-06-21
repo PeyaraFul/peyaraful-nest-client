@@ -23,6 +23,7 @@ import {
   HiOutlineSparkles,
   HiOutlineUser,
 } from "react-icons/hi2";
+import { createProperty } from "@/lib/api/properties";
 
 const propertyTypes = [
   { id: "apartment", label: "Apartment" },
@@ -108,7 +109,7 @@ export default function AddPropertyForm() {
     setRentType(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
@@ -124,7 +125,7 @@ export default function AddPropertyForm() {
       bathrooms: Number(formData.get("bathrooms")),
       propertySize: formData.get("propertySize"),
       amenities: selectedAmenities,
-      images: imageFiles,
+      images: imageUrl,
       extraFeatures,
       status: "pending",
       ownerInfo: {
@@ -133,6 +134,9 @@ export default function AddPropertyForm() {
         ownerPhone: formData.get("ownerPhone"),
       },
     };
+
+    //add property api
+    await createProperty(payload);
 
     console.log("Add Property Payload:", payload);
   };
@@ -324,6 +328,21 @@ export default function AddPropertyForm() {
                     <FieldError />
                   </TextField>
 
+                  {/* Image Url */}
+                  <TextField
+                    name="imageUrl"
+                    isRequired
+                    className="md:col-span-2 xl:col-span-3"
+                  >
+                    <Label>Image Url</Label>
+                    <TextArea
+                      placeholder="e.g. https://example.com/image.jpg"
+                      rows={5}
+                      className="w-full rounded-xl border border-default-300 bg-white px-4 py-3"
+                    />
+                    <FieldError />
+                  </TextField>
+
                   {/* Description */}
                   <TextField
                     name="description"
@@ -395,7 +414,7 @@ export default function AddPropertyForm() {
               </div>
 
               {/* ================= IMAGES ================= */}
-              <div className="w-full rounded-3xl border border-default-200 bg-default-50/40 p-4 sm:p-5 lg:p-6">
+              {/* <div className="w-full rounded-3xl border border-default-200 bg-default-50/40 p-4 sm:p-5 lg:p-6">
                 <div className="mb-5 flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                     <HiOutlinePhoto className="text-xl" />
@@ -449,7 +468,7 @@ export default function AddPropertyForm() {
                     </div>
                   )}
                 </div>
-              </div>
+              </div> */}
 
               {/* ================= EXTRA FEATURES ================= */}
               <div className="w-full rounded-3xl border border-default-200 bg-default-50/40 p-4 sm:p-5 lg:p-6">
