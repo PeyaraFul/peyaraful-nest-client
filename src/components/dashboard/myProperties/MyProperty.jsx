@@ -18,6 +18,7 @@ import { getProperty } from "@/lib/api/properties";
 
 import { authClient } from "@/lib/auth-client";
 import ModalForm from "../updatePropertyForm/ModalForm";
+import DeleteBtn from "../deleteProperty/DeleteMehode";
 
 const getStatusColor = (status) => {
   const value = status?.toLowerCase();
@@ -230,12 +231,7 @@ export default function MyPropertiesTable({
                             </Modal>
 
                             {/* DELETE */}
-                            <button
-                              onClick={() => onDelete?.(property._id)}
-                              className="p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-500/10"
-                            >
-                              <FiTrash2 className="text-[18px] text-red-500" />
-                            </button>
+                            <DeleteBtn propertyId={property._id} />
                           </div>
                         </td>
                       </tr>
@@ -304,7 +300,7 @@ export default function MyPropertiesTable({
                   <div className="flex items-center gap-2 text-sm font-semibold text-default-900">
                     <FiDollarSign className="text-default-500" />
                     <span>
-                      ৳ {formatPrice(property?.rent)} /{" "}
+                      $ {formatPrice(property?.rent)} /{" "}
                       {property?.rentType || "Monthly"}
                     </span>
                   </div>

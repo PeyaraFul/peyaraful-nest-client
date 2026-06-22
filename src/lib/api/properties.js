@@ -49,7 +49,7 @@ export const updateProperty = async (id, propertyData) => {
 
 //deleting a property
 export const deleteProperty = async (id) => {
-  const response = await fetch(`${baseUrl}/properties/${id}`, {
+  const response = await fetch(`${baseUrl}/api/properties/${id}`, {
     method: "DELETE",
   });
 
