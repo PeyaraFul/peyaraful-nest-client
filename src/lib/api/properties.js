@@ -33,13 +33,13 @@ export const createProperty = async (data) => {
 };
 
 //updating a property
-export const updateProperty = async (id, data) => {
-  const response = await fetch(`${baseUrl}/properties/${id}`, {
-    method: "PUT",
+export const updateProperty = async (id, propertyData) => {
+  const response = await fetch(`${baseUrl}/api/properties/${id}`, {
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(propertyData),
   });
 
   const result = await response.json();

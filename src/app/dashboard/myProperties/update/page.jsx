@@ -65,7 +65,7 @@ const suggestedFeatures = [
   "Pet Friendly",
 ];
 
-export default function AddPropertyForm() {
+export default function UpdatePropertyForm({ propertyData }) {
   const { data: session } = authClient.useSession();
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [extraFeatures, setExtraFeatures] = useState([]);
@@ -333,15 +333,13 @@ export default function AddPropertyForm() {
                     isRequired
                     className="md:col-span-2 xl:col-span-3"
                   >
-                    <Label>Image URL</Label>
-                    <Input
-                      name="imageUrl"
-                      type="url"
-                      placeholder="https://example.com/image.jpg"
-                      pattern="https://.+"
+                    <Label>Image Url</Label>
+                    <TextArea
+                      placeholder="e.g. https://example.com/image.jpg"
+                      rows={5}
                       className="w-full rounded-xl border border-default-300 bg-white px-4 py-3"
                     />
-                    <FieldError>Please enter a valid image URL</FieldError>
+                    <FieldError />
                   </TextField>
 
                   {/* Description */}
@@ -542,53 +540,6 @@ export default function AddPropertyForm() {
                   </div>
                 )}
               </div>
-
-              {/* ================= OWNER INFORMATION ================= */}
-              {/* <div className="w-full rounded-3xl border border-default-200 bg-default-50/40 p-4 sm:p-5 lg:p-6">
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                    <HiOutlineUser className="text-xl" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold md:text-xl">
-                      Owner Information
-                    </h2>
-                    <p className="text-sm text-default-500">
-                      Add owner details for this property
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-                  <TextField name="ownerName" isRequired>
-                    <Label>Owner Name</Label>
-                    <Input
-                      placeholder="Enter owner full name"
-                      className="w-full rounded-xl border border-default-300 bg-white px-4 py-3"
-                    />
-                    <FieldError />
-                  </TextField>
-
-                  <TextField name="ownerEmail" type="email" isRequired>
-                    <Label>Owner Email</Label>
-                    <Input
-                      type="email"
-                      placeholder="Enter owner email"
-                      className="w-full rounded-xl border border-default-300 bg-white px-4 py-3"
-                    />
-                    <FieldError />
-                  </TextField>
-
-                  <TextField name="ownerPhone" isRequired>
-                    <Label>Owner Phone</Label>
-                    <Input
-                      placeholder="Enter owner phone number"
-                      className="w-full rounded-xl border border-default-300 bg-white px-4 py-3"
-                    />
-                    <FieldError />
-                  </TextField>
-                </div>
-              </div> */}
 
               {/* ================= ACTIONS ================= */}
               <div className="flex w-full flex-col gap-3 border-t border-default-200 pt-6 sm:flex-row sm:items-center sm:justify-end">

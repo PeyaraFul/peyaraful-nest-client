@@ -3,33 +3,21 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Button,
-  Chip,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Spinner,
-} from "@heroui/react";
+import { Button, Chip, Spinner } from "@heroui/react";
 import {
   FiEdit2,
   FiTrash2,
-  FiMoreVertical,
   FiMapPin,
   FiHome,
   FiDollarSign,
   FiEye,
 } from "react-icons/fi";
+import { Envelope } from "@gravity-ui/icons";
+import { Input, Label, Modal, Surface, TextField } from "@heroui/react";
 import { getProperty } from "@/lib/api/properties";
 
 import { authClient } from "@/lib/auth-client";
+import ModalForm from "../updatePropertyForm/ModalForm";
 
 const getStatusColor = (status) => {
   const value = status?.toLowerCase();
@@ -160,7 +148,6 @@ export default function MyPropertiesTable({
                                 sizes="80px"
                                 src={
                                   property?.image ||
-                                  property?.imageLink ||
                                   "https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?q=80&w=1200&auto=format&fit=crop"
                                 }
                                 alt={property?.propertyTitle || "Property"}
@@ -235,12 +222,12 @@ export default function MyPropertiesTable({
                             </Link>
 
                             {/* UPDATE */}
-                            <Link
-                              href={`/dashboard/owner/my-properties/update/${property._id}`}
-                              className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-white/10"
-                            >
-                              <FiEdit2 className="text-[18px] text-neutral-600 dark:text-neutral-300" />
-                            </Link>
+                            <Modal clsx="w-full border border-red-600 max-w-md">
+                              <Button variant="secondary">
+                                <FiEdit2 className="text-[18px] text-neutral-600 dark:text-neutral-300" />
+                              </Button>
+                              <ModalForm property={property} />
+                            </Modal>
 
                             {/* DELETE */}
                             <button

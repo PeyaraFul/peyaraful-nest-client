@@ -35,7 +35,10 @@ const PropertyDetailPage = async ({ params }) => {
           {/* Hero Image */}
           <div className="overflow-hidden rounded-3xl shadow-lg">
             <Image
-              src={property.image}
+              src={
+                property?.image ||
+                "https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?q=80&w=1200&auto=format&fit=crop"
+              }
               alt={property.propertyTitle}
               width={1400}
               height={700}
@@ -152,13 +155,11 @@ const PropertyDetailPage = async ({ params }) => {
 
                 <div className="flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white font-bold">
-                    {property.ownerInformation?.name?.charAt(0)}
+                    {property.ownerName?.charAt(0)}
                   </div>
 
                   <div>
-                    <h4 className="font-semibold">
-                      {property.ownerInformation?.name}
-                    </h4>
+                    <h4 className="font-semibold">{property.ownerName}</h4>
 
                     <p className="text-sm text-slate-500">Property Owner</p>
                   </div>
@@ -166,13 +167,8 @@ const PropertyDetailPage = async ({ params }) => {
 
                 <div className="mt-6 space-y-4">
                   <div className="flex items-center gap-3">
-                    <FaPhone />
-                    <span>{property.ownerInformation?.phone}</span>
-                  </div>
-
-                  <div className="flex items-center gap-3">
                     <FaEnvelope />
-                    <span>{property.ownerInformation?.email}</span>
+                    <span>{property.ownerEmail}</span>
                   </div>
                 </div>
 
