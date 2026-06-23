@@ -12,7 +12,7 @@ export default async function MyBookingsPage() {
   console.log("ID", session.user.id);
 
   const bookings = await getBookings(ownerId);
-  console.log(bookings);
+  // console.log(bookings);
 
   return (
     <div className="mx-auto max-w-7xl p-4 md:p-6">
