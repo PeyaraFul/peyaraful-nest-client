@@ -11,7 +11,7 @@ export default async function MyBookingsPage() {
   const ownerId = session?.user?.id;
   // console.log("ID", session.user.id);
 
-  const myProperties = await getProperties({ ownerId });
+  const myProperties = await getProperties({ id: ownerId });
 
   return (
     <div className="mx-auto max-w-7xl p-4 md:p-6">

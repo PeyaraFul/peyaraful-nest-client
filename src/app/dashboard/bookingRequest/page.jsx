@@ -1,4 +1,4 @@
-import MyBookingsTable from "@/components/dashboard/booking/MyBookings";
+import BookingRequestsTable from "@/components/dashboard/bookingRequest/BookingRequest";
 import { getBookings } from "@/lib/api/bookings";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -8,15 +8,15 @@ export default async function MyBookingsPage() {
     headers: await headers(),
   });
 
-  const tenantId = session?.user?.id;
+  const ownerId = session?.user?.id;
   console.log("ID", session.user.id);
 
-  const bookings = await getBookings(tenantId);
+  const bookings = await getBookings(ownerId);
   console.log(bookings);
 
   return (
     <div className="mx-auto max-w-7xl p-4 md:p-6">
-      <MyBookingsTable bookings={bookings} />
+      <BookingRequestsTable bookings={bookings} />
     </div>
   );
 }
