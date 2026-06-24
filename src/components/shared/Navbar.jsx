@@ -70,7 +70,7 @@ export default function NavbarComponent() {
           ) : (
             <>
               <Link
-                href="/dashboard/overview"
+                href="/dashboard/bookings"
                 variant="flat"
                 color="primary"
                 radius="full"

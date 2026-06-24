@@ -1,50 +1,50 @@
 "use client";
 
 import Link from "next/link";
-import { useForm } from "react-hook-form";
-// import { Envelope, Lock } from "@gravity-ui/icons";
-
+import { useForm, Controller } from "react-hook-form";
 import { authClient } from "@/lib/auth-client";
 import { FcGoogle } from "react-icons/fc";
 import { CiUnlock } from "react-icons/ci";
-import { Description, Label, Radio, RadioGroup } from "@heroui/react";
-import { useState } from "react";
+
 import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
-  // const [value, setValue] = useState("job-seeker");
-  // console.log('value', value);
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      photoUrl: "",
+      password: "",
+      role: "tenant",
+    },
+  });
 
-   const router = useRouter();
-
-  
   const onSubmit = async (data) => {
     try {
-      const { name, email, photoUrl, password } = data;
+      const { name, email, photoUrl, password, role } = data;
+      console.log("role", role);
 
       const { data: res, error } = await authClient.signUp.email({
         name,
         email,
-        image: photoUrl,
+        image: photoUrl?.trim() || undefined,
         password,
+        role,
         callbackURL: "/",
       });
 
       if (error) {
-       
         alert(error.message || "Registration failed");
         return;
       }
 
-      console.log(res);
-
-      // Redirect to home page
+      console.log("Register success:", res);
       router.push("/");
     } catch (err) {
       console.error(err);
@@ -53,12 +53,11 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-black px-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-black px-4 py-10">
       <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-white">Welcome Back</h1>
-
+          <h1 className="text-4xl font-bold text-white">Create Account</h1>
           <p className="mt-2 text-sm text-gray-400">
             Register to continue to your account
           </p>
@@ -71,8 +70,6 @@ export default function RegisterPage() {
             <label className="mb-2 block text-sm text-gray-300">Name</label>
 
             <div className="flex items-center rounded-xl border border-white/10 bg-white/5 px-4">
-              {/* <Envelope className="h-5 w-5 text-gray-400" /> */}
-
               <input
                 type="text"
                 placeholder="Enter your name"
@@ -95,14 +92,16 @@ export default function RegisterPage() {
             </label>
 
             <div className="flex items-center rounded-xl border border-white/10 bg-white/5 px-4">
-              {/* <Envelope className="h-5 w-5 text-gray-400" /> */}
-
               <input
                 type="email"
                 placeholder="john@example.com"
                 className="w-full bg-transparent px-3 py-3 text-white outline-none"
                 {...register("email", {
                   required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Please enter a valid email address",
+                  },
                 })}
               />
             </div>
@@ -114,28 +113,32 @@ export default function RegisterPage() {
             )}
           </div>
 
-
-
-
-
-          {/* photo link */}
+          {/* Photo link */}
           <div>
-            <label className="mb-2 block text-sm text-gray-300">Photo link</label>
+            <label className="mb-2 block text-sm text-gray-300">
+              Photo Link
+            </label>
 
             <div className="flex items-center rounded-xl border border-white/10 bg-white/5 px-4">
-              {/* <Envelope className="h-5 w-5 text-gray-400" /> */}
-
               <input
                 type="url"
                 placeholder="Enter your photo link"
                 className="w-full bg-transparent px-3 py-3 text-white outline-none"
-                {...register("photoUrl")}
+                {...register("photoUrl", {
+                  pattern: {
+                    value: /^https?:\/\/.+/i,
+                    message: "Please enter a valid image URL",
+                  },
+                })}
               />
             </div>
 
-
+            {errors.photoUrl && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.photoUrl.message}
+              </p>
+            )}
           </div>
-
 
           {/* Password */}
           <div>
@@ -166,40 +169,46 @@ export default function RegisterPage() {
           </div>
 
           {/* Role selection */}
-          {/* <div className="flex flex-col gap-4">
-            <Label>Select Role</Label>
-            <RadioGroup defaultValue="job-seeker" orientation="horizontal"
-              value={value}
-              onChange={setValue}
-            >
-              <Radio value="job-seeker" selected>
-                <Radio.Control>
-                  <Radio.Indicator />
-                </Radio.Control>
-                <Radio.Content>
-                  <Label>Job Seeker</Label>
-                </Radio.Content>
+          <div className="flex flex-col gap-3">
+            <label className="text-sm text-gray-300">Select Role</label>
 
-              </Radio>
-              <Radio value="recruiter">
-                <Radio.Control>
-                  <Radio.Indicator />
-                </Radio.Control>
-                <Radio.Content>
-                  <Label>Recruiter</Label>
+            <div className="flex items-center gap-6 rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+              <label className="flex cursor-pointer items-center gap-2 text-gray-300">
+                <input
+                  type="radio"
+                  value="tenant"
+                  {...register("role", {
+                    required: "Please select a role",
+                  })}
+                  className="h-4 w-4 accent-violet-600"
+                />
+                <span>Tenant</span>
+              </label>
 
-                </Radio.Content>
-              </Radio>
+              <label className="flex cursor-pointer items-center gap-2 text-gray-300">
+                <input
+                  type="radio"
+                  value="owner"
+                  {...register("role", {
+                    required: "Please select a role",
+                  })}
+                  className="h-4 w-4 accent-violet-600"
+                />
+                <span>Owner</span>
+              </label>
+            </div>
 
-            </RadioGroup>
-          </div> */}
-
+            {errors.role && (
+              <p className="text-sm text-red-500">{errors.role.message}</p>
+            )}
+          </div>
           {/* Submit Button */}
           <button
             type="submit"
-            className="cursor-pointer w-full rounded-xl bg-violet-600 py-3 font-semibold text-white transition hover:bg-violet-700"
+            disabled={isSubmitting}
+            className="w-full cursor-pointer rounded-xl bg-violet-600 py-3 font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            Create Account
+            {isSubmitting ? "Creating Account..." : "Create Account"}
           </button>
         </form>
 
@@ -213,7 +222,7 @@ export default function RegisterPage() {
         {/* Google Login */}
         <button
           type="button"
-          className="cursor-pointer flex w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/5 py-3 text-white transition hover:bg-white/10"
+          className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/5 py-3 text-white transition hover:bg-white/10"
         >
           <FcGoogle size={22} />
           Continue with Google

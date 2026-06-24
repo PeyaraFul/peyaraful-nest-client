@@ -1,15 +1,23 @@
 // import type {ComponentType, SVGProps} from "react";
 
 import { Button, Drawer } from "@heroui/react";
-import { MdFavoriteBorder } from "react-icons/md";
-import { FaHome } from "react-icons/fa";
+import {
+  MdAddCircleOutline,
+  MdFavoriteBorder,
+  MdOutlineStore,
+  MdPayment,
+} from "react-icons/md";
+import { FaHome, FaRegBookmark, FaUsers } from "react-icons/fa";
 import { HiClipboardDocumentCheck } from "react-icons/hi2";
 import { CgProfile } from "react-icons/cg";
 import Link from "next/link";
+import { SiSimpleanalytics } from "react-icons/si";
+import { VscGitPullRequestNewChanges } from "react-icons/vsc";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
-export function DashboardSidebar() {
-  const navItems = [
-    { icon: FaHome, label: "Overview", href: "/dashboard/overview" },
+export async function DashboardSidebar() {
+  const tenantNavItems = [
     {
       icon: HiClipboardDocumentCheck,
       label: "My bookings",
@@ -22,6 +30,63 @@ export function DashboardSidebar() {
     },
     { icon: CgProfile, label: "Profile", href: "/dashboard/profile" },
   ];
+
+  const ownerNavItems = [
+    {
+      icon: SiSimpleanalytics,
+      label: "Analytics",
+      href: "/dashboard/home",
+    },
+    {
+      icon: MdAddCircleOutline,
+      label: "Add Property",
+      href: "/dashboard/addProperty",
+    },
+    {
+      icon: VscGitPullRequestNewChanges,
+      label: "Booking Requests",
+      href: "/dashboard/bookingRequest",
+    },
+    { icon: CgProfile, label: "Profile", href: "/dashboard/profile" },
+  ];
+  const adminNavItems = [
+    {
+      icon: FaUsers,
+      label: "All Users",
+      href: "/dashboard/allUser",
+    },
+    {
+      icon: MdOutlineStore,
+      label: "All Properties",
+      href: "/dashboard/allProperty",
+    },
+    {
+      icon: FaRegBookmark,
+      label: "All Bookings",
+      href: "/dashboard/bookings",
+    },
+    {
+      icon: MdPayment,
+      label: "Transactions",
+      href: "/dashboard/transactions",
+    },
+    { icon: CgProfile, label: "Profile", href: "/dashboard/profile" },
+  ];
+
+  let navItems = [];
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const userRole = session?.user?.role;
+  console.log("userRole", userRole);
+  if (userRole === "tenant") {
+    navItems = tenantNavItems;
+  } else if (userRole === "owner") {
+    navItems = ownerNavItems;
+  } else if (userRole === "admin") {
+    navItems = adminNavItems;
+  }
 
   const navContent = (
     <nav className="flex flex-col gap-1">
