@@ -272,7 +272,9 @@ export default function AdminAllPropertiesTable({
                         )}
                       </td>
 
-                      {/* ACTIONS */}
+                      {/* =============ACTIONS=============== */}
+
+                      {/* ViEW */}
                       <td className="px-4 py-4">
                         <div className="flex flex-wrap items-center justify-center gap-2">
                           <Link href={`/properties/${property._id}`}>
@@ -281,6 +283,7 @@ export default function AdminAllPropertiesTable({
                               variant="flat"
                               radius="full"
                               isIconOnly
+                              // isDisabled={property?.status !== "Approved"}
                             >
                               <FiEye />
                             </Button>
@@ -294,10 +297,7 @@ export default function AdminAllPropertiesTable({
                             radius="full"
                             startContent={<FiCheck />}
                             onClick={() => handleApprove(property._id)}
-                            isDisabled={
-                              actionLoadingId === property._id || isApproved
-                            }
-                            isLoading={actionLoadingId === property._id}
+                            isDisabled={property?.status === "Approved"}
                           >
                             Approve
                           </Button>
@@ -310,7 +310,7 @@ export default function AdminAllPropertiesTable({
                               variant={isRejected ? "solid" : "flat"}
                               radius="full"
                               startContent={<FiX />}
-                              isDisabled={actionLoadingId === property._id}
+                              isDisabled={property?.status === "Rejected"}
                             >
                               Reject
                             </Button>
@@ -441,15 +441,13 @@ export default function AdminAllPropertiesTable({
                     </Link>
 
                     <Button
+                      size="sm"
                       color="success"
                       variant={isApproved ? "solid" : "flat"}
                       radius="full"
                       startContent={<FiCheck />}
-                      onPress={() => onApprove?.(property)}
-                      isDisabled={
-                        actionLoadingId === property._id || isApproved
-                      }
-                      isLoading={actionLoadingId === property._id}
+                      onClick={() => handleApprove(property._id)}
+                      isDisabled={property?.status === "Approved"}
                     >
                       Approve
                     </Button>
@@ -457,13 +455,14 @@ export default function AdminAllPropertiesTable({
                     <Modal clsx="w-full border border-red-600 max-w-md">
                       <Button
                         size="sm"
-                        color="danger"
-                        variant={isRejected ? "solid" : "flat"}
+                        color="success"
+                        variant={isApproved ? "solid" : "flat"}
                         radius="full"
-                        startContent={<FiX />}
-                        isDisabled={actionLoadingId === property._id}
+                        startContent={<FiCheck />}
+                        onClick={() => handleApprove(property._id)}
+                        isDisabled={property?.status === "Rejected"}
                       >
-                        Reject
+                        Approve
                       </Button>
                       <RejectModal property={property} />
                     </Modal>
