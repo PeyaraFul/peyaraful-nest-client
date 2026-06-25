@@ -1,9 +1,16 @@
 "use server";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-//getting all properties
+//getting all properties for admin dashboard
 export const getProperties = async () => {
   const response = await fetch(`${baseUrl}/api/properties`);
+  const data = await response.json();
+
+  return data;
+};
+//getting approved properties for public view
+export const getApprovedProperties = async () => {
+  const response = await fetch(`${baseUrl}/api/properties/approved`);
   const data = await response.json();
 
   return data;

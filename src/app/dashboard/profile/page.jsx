@@ -40,7 +40,7 @@ export default function ProfileCard() {
               <p className="text-gray-500 dark:text-gray-300">{user?.email}</p>
 
               <span className="inline-block mt-2 px-3 py-1 text-sm rounded-full bg-indigo-100 text-indigo-600 dark:bg-indigo-50/20 dark:text-indigo-300">
-                {user?.role || "Tenant"}
+                {user?.role || ""}
               </span>
             </div>
 

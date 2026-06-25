@@ -14,7 +14,12 @@ export default function LoginPage() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  const googleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+      // callbackURL: redirect,
+    });
+  };
   const onSubmit = async (data) => {
     // console.log("Form Data:", data);
     const { email, password } = data;
@@ -27,16 +32,13 @@ export default function LoginPage() {
     });
 
     if (error) {
-    alert(error.message || "Login failed");
-    return;
-  }
+      alert(error.message || "Login failed");
+      return;
+    }
 
-  alert("Login successful!");
+    alert("Login successful!");
 
-  console.log(res);
-
-
-    
+    console.log(res);
   };
 
   return (
@@ -136,6 +138,7 @@ export default function LoginPage() {
         {/* Google Login */}
         <button
           type="button"
+          onClick={googleSignIn}
           className="cursor-pointer flex w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/5 py-3 text-white transition hover:bg-white/10"
         >
           <FcGoogle size={22} />
