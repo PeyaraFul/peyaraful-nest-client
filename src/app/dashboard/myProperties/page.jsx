@@ -1,5 +1,5 @@
 import MyPropertiesTable from "@/components/dashboard/myProperties/MyProperty";
-import { getProperties } from "@/lib/api/properties";
+import { getOwnerProperty } from "@/lib/api/properties";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
@@ -9,9 +9,10 @@ export default async function MyBookingsPage() {
   });
 
   const ownerId = session?.user?.id;
-  // console.log("ID", session.user.id);
+  console.log("ID", session.user.id);
+  // ownerId = "6a3b56d145e0e917a6b5875b";
 
-  const myProperties = await getProperties({ id: ownerId });
+  const myProperties = await getOwnerProperty(ownerId);
 
   return (
     <div className="mx-auto max-w-7xl p-4 md:p-6">

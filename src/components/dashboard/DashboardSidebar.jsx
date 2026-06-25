@@ -38,6 +38,11 @@ export async function DashboardSidebar() {
       href: "/dashboard/home",
     },
     {
+      icon: MdOutlineStore,
+      label: "My Property",
+      href: "/dashboard/myProperties",
+    },
+    {
       icon: MdAddCircleOutline,
       label: "Add Property",
       href: "/dashboard/addProperty",

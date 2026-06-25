@@ -12,11 +12,9 @@ import {
   FiDollarSign,
   FiEye,
 } from "react-icons/fi";
-import { Envelope } from "@gravity-ui/icons";
-import { Input, Label, Modal, Surface, TextField } from "@heroui/react";
-import { getProperty } from "@/lib/api/properties";
 
-import { authClient } from "@/lib/auth-client";
+import { Modal } from "@heroui/react";
+
 import ModalForm from "../updatePropertyForm/ModalForm";
 import DeleteBtn from "../deleteProperty/DeleteMehode";
 
@@ -118,6 +116,9 @@ export default function MyPropertiesTable({
                     <th className="px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
                       Status
                     </th>
+                    <th className="px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                      Feedback
+                    </th>
                     <th className="px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300 text-center">
                       Action
                     </th>
@@ -191,7 +192,7 @@ export default function MyPropertiesTable({
                         <td className="px-4 py-3">
                           <div className="inline-flex flex-col rounded-xl bg-primary/10 px-3 py-1.5">
                             <span className="text-sm font-semibold text-primary">
-                              ৳ {formatPrice(property?.rent)}
+                              $ {formatPrice(property?.rent)}
                             </span>
                             <span className="text-[11px] text-primary/70">
                               / {property?.rentType || "Monthly"}
@@ -211,16 +212,31 @@ export default function MyPropertiesTable({
                           </Chip>
                         </td>
 
+                        {/* FEEDBACK */}
+                        <td className="px-4 py-4">
+                          {property?.rejectionFeedback ? (
+                            <div className="max-w-[240px] rounded-xl border border-danger/20 bg-danger/5 px-3 py-2 text-xs text-danger-700">
+                              {property.rejectionFeedback}
+                            </div>
+                          ) : (
+                            <span className="text-xs text-neutral-400">—</span>
+                          )}
+                        </td>
+
                         {/* ACTION */}
                         <td className="px-4 py-3">
                           <div className="flex items-center justify-center gap-2">
                             {/* VIEW */}
-                            <Link
-                              href={`/properties/${property._id}`}
-                              className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-white/10"
-                            >
-                              <FiEye className="text-[18px] text-neutral-600 dark:text-neutral-300" />
-                            </Link>
+                            {property.status === "Approved" ? (
+                              <Link
+                                href={`/properties/${property._id}`}
+                                className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-white/10"
+                              >
+                                <FiEye className="text-[18px] text-neutral-600 dark:text-neutral-300" />
+                              </Link>
+                            ) : (
+                              ""
+                            )}
 
                             {/* UPDATE */}
                             <Modal clsx="w-full border border-red-600 max-w-md">

@@ -9,9 +9,25 @@ export const getProperties = async () => {
   return data;
 };
 
-//getting a single property by id
-export const getProperty = async (id) => {
-  const response = await fetch(`${baseUrl}/api/properties/${id}`);
+//getting featured section  properties
+export const getFeaturedProperties = async () => {
+  const response = await fetch(`${baseUrl}/api/properties/featured`);
+  const data = await response.json();
+
+  return data;
+};
+
+//getting a single property by property id for details page
+export const getProperty = async (propertyId) => {
+  const response = await fetch(`${baseUrl}/api/properties/${propertyId}`);
+  const data = await response.json();
+
+  return data;
+};
+
+//getting a single property by owner id for my properties page
+export const getOwnerProperty = async (ownerId) => {
+  const response = await fetch(`${baseUrl}/api/properties/owner/${ownerId}`);
   const data = await response.json();
 
   return data;
