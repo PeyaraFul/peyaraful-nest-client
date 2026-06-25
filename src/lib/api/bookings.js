@@ -8,19 +8,20 @@ export const getBookings = async (Id) => {
   return data;
 };
 
-// export const createBooking = async (data) => {
-//   const response = await fetch(`${baseUrl}/api/bookings`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   });
+// createBooking
+export const createBooking = async (data) => {
+  const response = await fetch(`${baseUrl}/api/createBooking`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
 
-//   const result = await response.json();
+  const result = await response.json();
 
-//   return result;
-// };
+  return result;
+};
 
 // export const updateBooking = async (id, bookingStatus) => {
 //   const response = await fetch(`${baseUrl}/api/bookings/${id}`, {

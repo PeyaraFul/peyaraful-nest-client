@@ -11,7 +11,6 @@ export default function ProfileCard() {
 
   // console.log(session);
   return (
-    // min-h-screen gives it full viewport height, items-center centers it vertically, justify-center centers it horizontally
     <div className="lg:w-240 bg-gray-50  lg:pl-40 dark:bg-gray-900 flex items-center justify-center p-4">
       {/* CARD WRAPPER */}
       <div className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden my-auto">
@@ -19,7 +18,7 @@ export default function ProfileCard() {
         <div className="h-36 bg-gradient-to-r from-indigo-500 via-blue-500 to-purple-600 relative">
           <div className="absolute -bottom-12 left-1/2 -translate-x-1/2">
             <Image
-              src={user?.photoUrl || "https://i.ibb.co/4pDNDk1/avatar.png"}
+              src={user?.image || "https://i.ibb.co/4pDNDk1/avatar.png"}
               alt="profile"
               width={96}
               height={96}
