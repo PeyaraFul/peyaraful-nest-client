@@ -14,6 +14,13 @@ export default function NavbarComponent() {
   const { data: session } = authClient.useSession();
   //    console.log(session);
   const user = session?.user;
+  const userRole = session?.user?.role;
+
+  const dashboardRoutes = {
+    tenantRoute: "/dashboard/bookings",
+    ownerRoute: "/dashboard/home",
+    adminRoute: "/dashboard/allUser",
+  };
 
   const links = [
     {
@@ -70,7 +77,13 @@ export default function NavbarComponent() {
           ) : (
             <>
               <Link
-                href="/dashboard/bookings"
+                href={
+                  userRole === "admin"
+                    ? dashboardRoutes.adminRoute
+                    : userRole === "owner"
+                      ? dashboardRoutes.ownerRoute
+                      : dashboardRoutes.tenantRoute
+                }
                 variant="flat"
                 color="primary"
                 radius="full"

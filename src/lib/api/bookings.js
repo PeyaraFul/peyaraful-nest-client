@@ -20,7 +20,11 @@ export const createBooking = async (data) => {
 
   const result = await response.json();
 
-  return result;
+  return {
+    ok: response.ok,
+    status: response.status,
+    ...result,
+  };
 };
 
 // export const updateBooking = async (id, bookingStatus) => {

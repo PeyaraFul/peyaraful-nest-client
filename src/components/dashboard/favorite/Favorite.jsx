@@ -10,13 +10,26 @@ import {
   FaBath,
   FaTrash,
 } from "react-icons/fa6";
-import { getProperty } from "@/lib/api/properties";
 
-export default function FavoriteTable({
-  favorites = [],
-  onRemoveFavorite,
-  removingId,
-}) {
+import { deleteFavorite } from "@/lib/api/favorites";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { FiEye } from "react-icons/fi";
+
+export default function FavoriteTable({ favorites = [] }) {
+  const router = useRouter();
+  const handleDeleteFavorite = async (id) => {
+    // console.log(id);
+    const responseData = await deleteFavorite(id);
+
+    if (responseData?.ok) {
+      router.refresh();
+      alert("Favorite deleted successfully");
+    } else {
+      alert("Failed to delete favorite");
+    }
+  };
+
   return (
     <section className="rounded-3xl border border-default-200 bg-white p-4 shadow-sm sm:p-6 lg:p-8 dark:border-white/10 dark:bg-neutral-950">
       {/* Header */}
@@ -102,8 +115,10 @@ export default function FavoriteTable({
                           </div>
 
                           <div className="min-w-0">
-                            <h3 className="truncate text-base font-semibold text-neutral-900 dark:text-white">
-                              {favorite.propertyName}
+                            <h3 className="truncate underline text-base font-semibold text-neutral-900 dark:text-white">
+                              <Link href={`/properties/${favorite.propertyId}`}>
+                                {favorite.propertyName}
+                              </Link>
                             </h3>
 
                             <div className="mt-1 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
@@ -148,14 +163,13 @@ export default function FavoriteTable({
                         </div>
                       </td>
 
-                      {/* Action */}
+                      {/* ----------Action ----------*/}
                       <td className="px-6 py-5">
                         <Button
                           color="danger"
                           variant="flat"
                           startContent={<FaTrash />}
-                          isLoading={removingId === favorite._id}
-                          onPress={() => onRemoveFavorite?.(favorite)}
+                          onClick={() => handleDeleteFavorite(favorite._id)}
                           className="font-medium"
                         >
                           Remove
@@ -193,8 +207,10 @@ export default function FavoriteTable({
                 <div className="p-5">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
-                        {favorite.propertyName}
+                      <h3 className="text-lg underline font-bold text-neutral-900 dark:text-white">
+                        <Link href={`/properties/${favorite.propertyId}`}>
+                          {favorite.propertyName}
+                        </Link>
                       </h3>
 
                       <div className="mt-2 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
@@ -241,8 +257,7 @@ export default function FavoriteTable({
                     color="danger"
                     variant="flat"
                     startContent={<FaTrash />}
-                    isLoading={removingId === favorite._id}
-                    onPress={() => onRemoveFavorite?.(favorite)}
+                    onClick={() => handleDeleteFavorite(favorite._id)}
                     className="mt-5 w-full font-medium"
                   >
                     Remove Favorite

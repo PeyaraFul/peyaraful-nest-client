@@ -63,28 +63,23 @@ const formatDate = (date) => {
 export default function BookingRequestsTable({ bookings = [] }) {
   const router = useRouter();
   const handleApprove = async (bookingId) => {
-    console.log("approve bookingID:", bookingId);
     try {
-      const result = await updateBooking(bookingId, {
+      const responseData = await updateBooking(bookingId, {
         bookingStatus: "Approved",
       });
 
-      // const responseData = await result.json();
-      const responseData = result?.data;
-
-      // success response check
       if (responseData?.success) {
         console.log("Booking approved successfully:", responseData);
-        // toast.success(responseData?.message || "Booking approved successfully");
+        alert(responseData?.message || "Booking approved successfully");
 
         router.refresh();
         return;
       }
 
-      // toast.error(responseData?.message || "Failed to approve booking");
       alert(responseData?.message || "Failed to approve booking");
     } catch (error) {
       console.error("Error approving booking:", error);
+      alert("Something went wrong");
     }
   };
 

@@ -14,17 +14,45 @@ import {
   FaCalendarCheck,
 } from "react-icons/fa";
 import { createBooking } from "@/lib/api/bookings";
+import { createFavorite } from "@/lib/api/favorites";
 
 const PropertyDetailsClient = ({ property, session }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const isOwner = session?.user?.email === property?.ownerEmail;
 
-  const handleFavorite = () => {
-    if (isOwner) return;
-    setIsFavorite((prev) => !prev);
-  };
+  // const handleFavorite = () => {
+  //   if (isOwner) return;
+  //   setIsFavorite((prev) => !prev);
+  // };
 
+  const handleFavorite = async (property, session) => {
+    const payload = {
+      propertyId: property._id,
+      tenantId: session?.user?.id,
+      ownerId: property?.ownerId,
+      propertyName: property?.propertyTitle,
+      propertyImage: property?.image,
+      propertyLocation: property?.location,
+      tenantName: session?.user?.name,
+      tenantEmail: session?.user?.email,
+      rent: property?.rent,
+      propertyType: property?.propertyType,
+      bookingStatus: "pending",
+    };
+
+    try {
+      const res = await createFavorite(payload);
+
+      if (res.ok) {
+        alert(res.message || "Added to favorites");
+      } else {
+        alert(res.message || "Failed to add to favorites");
+      }
+    } catch (error) {
+      alert("Something went wrong");
+    }
+  };
   const handleBookNow = async (property, session) => {
     const payload = {
       propertyId: property._id,
@@ -40,7 +68,18 @@ const PropertyDetailsClient = ({ property, session }) => {
       bookingStatus: "pending",
       paymentStatus: "unpaid",
     };
-    await createBooking(payload);
+
+    try {
+      const res = await createBooking(payload);
+
+      if (res.ok) {
+        alert(res.message || "Booking created successfully");
+      } else {
+        alert(res.message || "Booking failed");
+      }
+    } catch (error) {
+      alert("Something went wrong");
+    }
   };
 
   return (
@@ -89,7 +128,7 @@ const PropertyDetailsClient = ({ property, session }) => {
 
                   <div className="w-full md:w-auto">
                     <h2 className="text-3xl font-bold text-primary">
-                      ৳ {property?.rent?.toLocaleString()}
+                      $ {property?.rent?.toLocaleString()}
                     </h2>
                     <p className="text-sm text-slate-500">
                       {property?.rentType}
@@ -101,7 +140,7 @@ const PropertyDetailsClient = ({ property, session }) => {
 
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <button
-                    onClick={handleFavorite}
+                    onClick={() => handleFavorite(property, session)}
                     className={`flex items-center justify-center gap-2 rounded-2xl border px-5 py-3 font-medium transition ${
                       isFavorite
                         ? "border-red-200 bg-red-50 text-red-500"
@@ -224,14 +263,14 @@ const PropertyDetailsClient = ({ property, session }) => {
                   {!isOwner && (
                     <>
                       <button
-                        onClick={handleBookNow}
+                        onClick={() => handleBookNow(property, session)}
                         className="w-full rounded-2xl bg-primary py-3 font-medium text-white hover:opacity-90"
                       >
                         Book Now
                       </button>
 
                       <button
-                        onClick={handleFavorite}
+                        onClick={() => handleFavorite(property, session)}
                         className={`w-full rounded-2xl py-3 font-medium transition ${
                           isFavorite
                             ? "border border-red-200 bg-red-50 text-red-500"
@@ -253,7 +292,7 @@ const PropertyDetailsClient = ({ property, session }) => {
               <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-white p-3 shadow-2xl lg:hidden">
                 <div className="flex gap-3">
                   <button
-                    onClick={handleFavorite}
+                    onClick={() => handleFavorite(property, session)}
                     className={`flex-1 rounded-2xl py-3 font-medium ${
                       isFavorite
                         ? "border border-red-200 bg-red-50 text-red-500"
@@ -267,7 +306,7 @@ const PropertyDetailsClient = ({ property, session }) => {
                   </button>
 
                   <button
-                    onClick={handleBookNow}
+                    onClick={() => handleBookNow(property, session)}
                     className="flex-1 rounded-2xl bg-primary py-3 font-medium text-white"
                   >
                     <div className="flex items-center justify-center gap-2">
