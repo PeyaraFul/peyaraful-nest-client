@@ -70,6 +70,21 @@ export const updateProperty = async (id, propertyData) => {
   return result;
 };
 
+//adding reviews to a property
+export const addReviewProperty = async (id, propertyData) => {
+  const response = await fetch(`${baseUrl}/api/properties/review/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(propertyData),
+  });
+
+  const result = await response.json();
+
+  return result;
+};
+
 //deleting a property
 export const deleteProperty = async (id) => {
   const response = await fetch(`${baseUrl}/api/properties/${id}`, {

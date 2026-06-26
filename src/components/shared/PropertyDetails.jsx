@@ -12,19 +12,37 @@ import {
   FaHeart,
   FaRegHeart,
   FaCalendarCheck,
+  FaStar,
+  FaRegStar,
 } from "react-icons/fa";
 import { createBooking } from "@/lib/api/bookings";
 import { createFavorite } from "@/lib/api/favorites";
+import { addReviewProperty } from "@/lib/api/properties";
+import { useRouter } from "next/navigation";
 
 const PropertyDetailsClient = ({ property, session }) => {
+  const router = useRouter();
   const [isFavorite, setIsFavorite] = useState(false);
+
+  // Reviews and Rating setup
+  const [rating, setRating] = useState(5);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [comment, setComment] = useState("");
 
   const isOwner = session?.user?.email === property?.ownerEmail;
 
-  // const handleFavorite = () => {
-  //   if (isOwner) return;
-  //   setIsFavorite((prev) => !prev);
-  // };
+  const handleReview = async (e) => {
+    e.preventDefault();
+    const review = {
+      userName: session?.user?.name || "Anonymous",
+      userImage: session?.user?.image || null,
+      rating: rating,
+      comment: comment,
+    };
+    await addReviewProperty(property._id, review);
+    alert("Review added successfully");
+    router.refresh();
+  };
 
   const handleFavorite = async (property, session) => {
     const payload = {
@@ -34,8 +52,6 @@ const PropertyDetailsClient = ({ property, session }) => {
       propertyName: property?.propertyTitle,
       propertyImage: property?.image,
       propertyLocation: property?.location,
-      tenantName: session?.user?.name,
-      tenantEmail: session?.user?.email,
       rent: property?.rent,
       propertyType: property?.propertyType,
       bookingStatus: "pending",
@@ -43,8 +59,8 @@ const PropertyDetailsClient = ({ property, session }) => {
 
     try {
       const res = await createFavorite(payload);
-
       if (res.ok) {
+        setIsFavorite(true);
         alert(res.message || "Added to favorites");
       } else {
         alert(res.message || "Failed to add to favorites");
@@ -53,6 +69,7 @@ const PropertyDetailsClient = ({ property, session }) => {
       alert("Something went wrong");
     }
   };
+
   const handleBookNow = async (property, session) => {
     const payload = {
       propertyId: property._id,
@@ -71,7 +88,6 @@ const PropertyDetailsClient = ({ property, session }) => {
 
     try {
       const res = await createBooking(payload);
-
       if (res.ok) {
         alert(res.message || "Booking created successfully");
       } else {
@@ -107,12 +123,12 @@ const PropertyDetailsClient = ({ property, session }) => {
           {/* Main Content */}
           <div className="mt-8 grid gap-8 lg:grid-cols-3">
             {/* Left Content */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 space-y-6">
               {/* Header */}
               <div className="rounded-3xl bg-white p-6 shadow-sm">
                 <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                   <div>
-                    <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+                    <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-600">
                       {property?.propertyType}
                     </span>
 
@@ -127,7 +143,7 @@ const PropertyDetailsClient = ({ property, session }) => {
                   </div>
 
                   <div className="w-full md:w-auto">
-                    <h2 className="text-3xl font-bold text-primary">
+                    <h2 className="text-3xl font-bold text-blue-600">
                       $ {property?.rent?.toLocaleString()}
                     </h2>
                     <p className="text-sm text-slate-500">
@@ -137,14 +153,13 @@ const PropertyDetailsClient = ({ property, session }) => {
                 </div>
 
                 {/* ===== ADD TO FAVORITE + BOOK NOW BUTTONS ===== */}
-
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <button
                     onClick={() => handleFavorite(property, session)}
                     className={`flex items-center justify-center gap-2 rounded-2xl border px-5 py-3 font-medium transition ${
                       isFavorite
                         ? "border-red-200 bg-red-50 text-red-500"
-                        : "border-slate-200 bg-white text-slate-700 hover:border-primary hover:text-primary"
+                        : "border-slate-200 bg-white text-slate-700 hover:border-blue-600 hover:text-blue-600"
                     }`}
                   >
                     {isFavorite ? <FaHeart /> : <FaRegHeart />}
@@ -155,7 +170,7 @@ const PropertyDetailsClient = ({ property, session }) => {
 
                   <button
                     onClick={() => handleBookNow(property, session)}
-                    className="flex items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 font-medium text-black shadow-md transition hover:scale-[1.02] hover:opacity-90"
+                    className="flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 font-medium text-white shadow-md transition hover:scale-[1.02] hover:opacity-90"
                   >
                     <FaCalendarCheck />
                     <span>Book Now</span>
@@ -164,26 +179,25 @@ const PropertyDetailsClient = ({ property, session }) => {
               </div>
 
               {/* Property Info */}
-              <div className="mt-6 rounded-3xl bg-white p-6 shadow-sm">
+              <div className="rounded-3xl bg-white p-6 shadow-sm">
                 <h3 className="mb-5 text-xl font-semibold">
                   Property Information
                 </h3>
-
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="rounded-2xl bg-slate-50 p-4 text-center">
-                    <FaBed className="mx-auto text-xl" />
+                    <FaBed className="mx-auto text-xl text-blue-600" />
                     <p className="mt-2 font-semibold">{property?.bedrooms}</p>
                     <span className="text-sm text-slate-500">Bedrooms</span>
                   </div>
 
                   <div className="rounded-2xl bg-slate-50 p-4 text-center">
-                    <FaBath className="mx-auto text-xl" />
+                    <FaBath className="mx-auto text-xl text-blue-600" />
                     <p className="mt-2 font-semibold">{property?.bathrooms}</p>
                     <span className="text-sm text-slate-500">Bathrooms</span>
                   </div>
 
                   <div className="rounded-2xl bg-slate-50 p-4 text-center">
-                    <FaExpandArrowsAlt className="mx-auto text-xl" />
+                    <FaExpandArrowsAlt className="mx-auto text-xl text-blue-600" />
                     <p className="mt-2 font-semibold">
                       {property?.propertySize}
                     </p>
@@ -193,7 +207,7 @@ const PropertyDetailsClient = ({ property, session }) => {
               </div>
 
               {/* Description */}
-              <div className="mt-6 rounded-3xl bg-white p-6 shadow-sm">
+              <div className="rounded-3xl bg-white p-6 shadow-sm">
                 <h3 className="mb-4 text-xl font-semibold">Description</h3>
                 <p className="leading-8 text-slate-600">
                   {property?.description}
@@ -202,9 +216,8 @@ const PropertyDetailsClient = ({ property, session }) => {
 
               {/* Amenities */}
               {property?.amenities?.length > 0 && (
-                <div className="mt-6 rounded-3xl bg-white p-6 shadow-sm">
+                <div className="rounded-3xl bg-white p-6 shadow-sm">
                   <h3 className="mb-4 text-xl font-semibold">Amenities</h3>
-
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {property.amenities.map((item, index) => (
                       <div key={index} className="flex items-center gap-2">
@@ -218,9 +231,8 @@ const PropertyDetailsClient = ({ property, session }) => {
 
               {/* Extra Features */}
               {property?.extraFeatures?.length > 0 && (
-                <div className="mt-6 rounded-3xl bg-white p-6 shadow-sm">
+                <div className="rounded-3xl bg-white p-6 shadow-sm">
                   <h3 className="mb-4 text-xl font-semibold">Extra Features</h3>
-
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {property.extraFeatures.map((item, index) => (
                       <div key={index} className="flex items-center gap-2">
@@ -231,6 +243,122 @@ const PropertyDetailsClient = ({ property, session }) => {
                   </div>
                 </div>
               )}
+
+              {/* ===== NEW: RATING AND REVIEWS SECTION (MODERN) ===== */}
+
+              <div className="rounded-3xl bg-white p-6 shadow-sm space-y-8">
+                <h3 className="text-xl font-bold text-slate-900 border-b pb-4">
+                  Ratings & Reviews ({property.reviews?.length})
+                </h3>
+
+                {/* Review Form */}
+                {!isOwner && (
+                  <form
+                    onSubmit={handleReview}
+                    className="space-y-4 bg-slate-50 p-5 rounded-2xl"
+                  >
+                    <h4 className="font-semibold text-slate-800">
+                      Post your review
+                    </h4>
+
+                    {/* Interactive Stars */}
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-slate-500">Rating:</span>
+                      <div className="flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setRating(star)}
+                            onMouseEnter={() => setHoverRating(star)}
+                            onMouseLeave={() => setHoverRating(0)}
+                            className="text-2xl transition duration-100 focus:outline-none"
+                          >
+                            {star <= (hoverRating || rating) ? (
+                              <FaStar className="text-amber-400" />
+                            ) : (
+                              <FaRegStar className="text-slate-300" />
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Text Area */}
+                    <div>
+                      <textarea
+                        rows={4}
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        placeholder="Write your review..."
+                        className="w-full rounded-xl border border-slate-200 p-4 text-sm outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 resize-none transition"
+                      ></textarea>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="rounded-xl bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-blue-700 transition"
+                    >
+                      Submit Review
+                    </button>
+                  </form>
+                )}
+
+                {/* Reviews List */}
+                <div className="divide-y divide-slate-100">
+                  {property.reviews?.length === 0 ? (
+                    <p className="text-slate-500 text-sm py-4">
+                      No reviews yet. Be the first to review this property!
+                    </p>
+                  ) : (
+                    property.reviews?.map((review, index) => (
+                      <div
+                        key={index}
+                        className="py-5 first:pt-0 last:pb-0 flex flex-col gap-3"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-3">
+                            {/* User Avatar */}
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 font-bold text-slate-600 text-sm overflow-hidden">
+                              {review.userImage ? (
+                                <Image
+                                  width="40"
+                                  height="40"
+                                  src={review.userImage}
+                                  alt={review.userName}
+                                  className="h-full w-full object-cover"
+                                />
+                              ) : (
+                                review.userName.charAt(0)
+                              )}
+                            </div>
+                            <div>
+                              <h5 className="font-semibold text-slate-800 text-sm">
+                                {review.userName}
+                              </h5>
+                            </div>
+                          </div>
+
+                          {/* Render Stars based on score */}
+                          <div className="flex items-center gap-0.5 text-sm text-amber-400">
+                            {[...Array(5)].map((_, i) =>
+                              i < review.rating ? (
+                                <FaStar key={i} />
+                              ) : (
+                                <FaRegStar key={i} className="text-slate-200" />
+                              ),
+                            )}
+                          </div>
+                        </div>
+                        <p className="text-slate-600 text-sm leading-6 pl-13">
+                          {review.comment}
+                        </p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+              {/* ===== END OF RATING SECTION ===== */}
             </div>
 
             {/* Owner Card */}
@@ -239,12 +367,10 @@ const PropertyDetailsClient = ({ property, session }) => {
                 <h3 className="mb-5 text-xl font-semibold">
                   Owner Information
                 </h3>
-
                 <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white font-bold">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white font-bold">
                     {property?.ownerName?.charAt(0) || "O"}
                   </div>
-
                   <div>
                     <h4 className="font-semibold">{property?.ownerName}</h4>
                     <p className="text-sm text-slate-500">Property Owner</p>
@@ -259,12 +385,11 @@ const PropertyDetailsClient = ({ property, session }) => {
                 </div>
 
                 <div className="mt-6 space-y-3">
-                  {/* ===== OWNER CARD BUTTONS ===== */}
                   {!isOwner && (
                     <>
                       <button
                         onClick={() => handleBookNow(property, session)}
-                        className="w-full rounded-2xl bg-primary py-3 font-medium text-white hover:opacity-90"
+                        className="w-full rounded-2xl bg-blue-600 py-3 font-medium text-white hover:opacity-90 transition"
                       >
                         Book Now
                       </button>
@@ -307,7 +432,7 @@ const PropertyDetailsClient = ({ property, session }) => {
 
                   <button
                     onClick={() => handleBookNow(property, session)}
-                    className="flex-1 rounded-2xl bg-primary py-3 font-medium text-white"
+                    className="flex-1 rounded-2xl bg-blue-600 py-3 font-medium text-white"
                   >
                     <div className="flex items-center justify-center gap-2">
                       <FaCalendarCheck />
@@ -316,7 +441,6 @@ const PropertyDetailsClient = ({ property, session }) => {
                   </button>
                 </div>
               </div>
-
               <div className="h-20 lg:hidden" />
             </>
           )}
