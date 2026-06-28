@@ -8,6 +8,7 @@ export default function Home() {
   return (
     <div>
       <HeroSection></HeroSection>
+      
       <Features></Features>
       <WhyChooseUs />
       <RentalStatistics />

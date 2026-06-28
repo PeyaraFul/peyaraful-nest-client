@@ -168,13 +168,38 @@ const PropertyDetailsClient = ({ property, session }) => {
                     </span>
                   </button>
 
-                  <button
-                    onClick={() => handleBookNow(property, session)}
-                    className="flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 font-medium text-white shadow-md transition hover:scale-[1.02] hover:opacity-90"
-                  >
-                    <FaCalendarCheck />
-                    <span>Book Now</span>
-                  </button>
+                  <form action="/api/payment" method="POST">
+                    <section>
+                      <input
+                        type="hidden"
+                        name="propertyId"
+                        value={property._id}
+                      />
+                      <input
+                        type="hidden"
+                        name="title"
+                        value={property?.propertyTitle}
+                      />
+                      <input
+                        type="hidden"
+                        name="price"
+                        value={property?.rent}
+                      />
+                      <input
+                        type="hidden"
+                        name="image"
+                        value={property?.image}
+                      />
+                    </section>
+                    <button
+                      type="submit"
+                      role="link"
+                      className="flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 font-medium text-white shadow-md transition hover:scale-[1.02] hover:opacity-90"
+                    >
+                      <FaCalendarCheck />
+                      <span>Book Now</span>
+                    </button>
+                  </form>
                 </div>
               </div>
 
@@ -387,12 +412,40 @@ const PropertyDetailsClient = ({ property, session }) => {
                 <div className="mt-6 space-y-3">
                   {!isOwner && (
                     <>
-                      <button
-                        onClick={() => handleBookNow(property, session)}
-                        className="w-full rounded-2xl bg-blue-600 py-3 font-medium text-white hover:opacity-90 transition"
+                      <form
+                        action="/api/payment"
+                        method="POST"
                       >
-                        Book Now
-                      </button>
+                        <section>
+                          <input
+                            type="hidden"
+                            name="propertyId"
+                            value={property._id}
+                          />
+                          <input
+                            type="hidden"
+                            name="title"
+                            value={property?.propertyTitle}
+                          />
+                          <input
+                            type="hidden"
+                            name="price"
+                            value={property?.rent}
+                          />
+                          <input
+                            type="hidden"
+                            name="image"
+                            value={property?.image}
+                          />
+                        </section>
+                        <button
+                          type="submit"
+                          role="link"
+                          className="w-full rounded-2xl bg-blue-600 py-3 font-medium text-white hover:opacity-90 transition"
+                        >
+                          Book Now
+                        </button>
+                      </form>
 
                       <button
                         onClick={() => handleFavorite(property, session)}
@@ -430,15 +483,38 @@ const PropertyDetailsClient = ({ property, session }) => {
                     </div>
                   </button>
 
-                  <button
-                    onClick={() => handleBookNow(property, session)}
-                    className="flex-1 rounded-2xl bg-blue-600 py-3 font-medium text-white"
-                  >
-                    <div className="flex items-center justify-center gap-2">
+                  <form action="/api/payment" method="POST">
+                    <section>
+                      <input
+                        type="hidden"
+                        name="propertyId"
+                        value={property._id}
+                      />
+                      <input
+                        type="hidden"
+                        name="title"
+                        value={property?.propertyTitle}
+                      />
+                      <input
+                        type="hidden"
+                        name="price"
+                        value={property?.rent}
+                      />
+                      <input
+                        type="hidden"
+                        name="image"
+                        value={property?.image}
+                      />
+                    </section>
+                    <button
+                      type="submit"
+                      role="link"
+                      className="flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 font-medium text-white shadow-md transition hover:scale-[1.02] hover:opacity-90"
+                    >
                       <FaCalendarCheck />
                       <span>Book Now</span>
-                    </div>
-                  </button>
+                    </button>
+                  </form>
                 </div>
               </div>
               <div className="h-20 lg:hidden" />
