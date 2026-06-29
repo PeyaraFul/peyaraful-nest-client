@@ -1,6 +1,6 @@
 "use client";
 
-import { getPaymentData } from "@/lib/api/payments";
+
 
 import { getBookings } from "@/lib/api/bookings";
 import { getProperties } from "@/lib/api/properties";

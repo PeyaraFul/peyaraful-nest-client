@@ -5,7 +5,7 @@ import { stripe } from "../../lib/stripe";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BiRightArrowAlt } from "react-icons/bi";
 import { HiMail } from "react-icons/hi";
-import { createPayment } from "@/lib/api/payments";
+
 import { createBooking } from "@/lib/api/bookings";
 
 export default async function Success({ searchParams }) {
@@ -63,7 +63,6 @@ export default async function Success({ searchParams }) {
       createdAt: new Date(),
     };
 
-    await createPayment(payload);
     await createBooking(payload) ;
 
     return (
