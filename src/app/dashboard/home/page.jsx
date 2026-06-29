@@ -69,14 +69,14 @@ export default function OwnerSummaryCards() {
 
       try {
         const [paymentData, bookingData, propertyData] = await Promise.all([
-          getPaymentData(ownerId).catch(() => []),
+          getBookings(ownerId).catch(() => []),
           getBookings(ownerId).catch(() => []),
           getProperties(ownerId).catch(() => []),
         ]);
 
         const calculatedEarnings = (paymentData || [])
           .filter((payment) => payment.paymentStatus?.toLowerCase() === "paid")
-          .reduce((acc, curr) => acc + (curr.amount || 0), 0);
+          .reduce((acc, curr) => acc + (curr.amountPaid || 0), 0);
 
         setStats({
           totalEarnings: calculatedEarnings,

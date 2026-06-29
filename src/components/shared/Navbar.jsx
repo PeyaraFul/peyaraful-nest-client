@@ -84,7 +84,7 @@ export default function NavbarComponent() {
                       ? dashboardRoutes.ownerRoute
                       : dashboardRoutes.tenantRoute
                 }
-                variant="flat"
+              
                 color="primary"
                 radius="full"
               >

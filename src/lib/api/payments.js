@@ -17,3 +17,23 @@ export const getPaymentData = async (id) => {
 
   return data;
 };
+
+
+// createPayment
+export const createPayment = async (data) => {
+  const response = await fetch(`${baseUrl}/api/createPayment`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await response.json();
+
+  return {
+    ok: response.ok,
+    status: response.status,
+    ...result,
+  };
+};

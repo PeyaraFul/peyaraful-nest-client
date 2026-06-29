@@ -70,34 +70,6 @@ const PropertyDetailsClient = ({ property, session }) => {
     }
   };
 
-  const handleBookNow = async (property, session) => {
-    const payload = {
-      propertyId: property._id,
-      tenantId: session?.user?.id,
-      ownerId: property?.ownerId,
-      propertyName: property?.propertyTitle,
-      propertyImage: property?.image,
-      propertyLocation: property?.location,
-      tenantName: session?.user?.name,
-      tenantEmail: session?.user?.email,
-      bookingDate: new Date(),
-      amountPaid: property?.rent,
-      bookingStatus: "pending",
-      paymentStatus: "unpaid",
-    };
-
-    try {
-      const res = await createBooking(payload);
-      if (res.ok) {
-        alert(res.message || "Booking created successfully");
-      } else {
-        alert(res.message || "Booking failed");
-      }
-    } catch (error) {
-      alert("Something went wrong");
-    }
-  };
-
   return (
     <div>
       <h1 className="py-6 text-center text-3xl font-bold text-gray-800">
@@ -189,6 +161,16 @@ const PropertyDetailsClient = ({ property, session }) => {
                         type="hidden"
                         name="image"
                         value={property?.image}
+                      />
+                      <input
+                        type="hidden"
+                        name="ownerId"
+                        value={property?.ownerId}
+                      />
+                      <input
+                        type="hidden"
+                        name="propertyLocation"
+                        value={property?.location}
                       />
                     </section>
                     <button
@@ -412,10 +394,7 @@ const PropertyDetailsClient = ({ property, session }) => {
                 <div className="mt-6 space-y-3">
                   {!isOwner && (
                     <>
-                      <form
-                        action="/api/payment"
-                        method="POST"
-                      >
+                      <form action="/api/payment" method="POST">
                         <section>
                           <input
                             type="hidden"

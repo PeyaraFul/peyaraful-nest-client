@@ -1,5 +1,6 @@
 import AdminTransactionsTable from "@/components/dashboard/payment/AllPament";
-import { getPayments } from "@/lib/api/payments";
+import { getAllBookings } from "@/lib/api/bookings";
+
 
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -12,7 +13,7 @@ export default async function TransactionPage() {
   const adminId = session?.user?.id;
   // console.log("ID", session.user.id);
 
-  const transactionData = await getPayments();
+  const transactionData = await getAllBookings();
 
   return (
     <div className="mx-auto max-w-7xl p-4 md:p-6">

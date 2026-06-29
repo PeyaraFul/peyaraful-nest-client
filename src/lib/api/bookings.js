@@ -1,12 +1,22 @@
 "use server";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
+//getting booking by user id
 export const getBookings = async (Id) => {
   const response = await fetch(`${baseUrl}/api/bookings/${Id}`);
   const data = await response.json();
 
   return data;
 };
+//getting booking by user id
+export const getAllBookings = async () => {
+  const response = await fetch(`${baseUrl}/api/allBookings`);
+  const data = await response.json();
+
+  return data;
+};
+
+
 
 // createBooking
 export const createBooking = async (data) => {
