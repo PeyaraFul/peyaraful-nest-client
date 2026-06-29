@@ -1,8 +1,12 @@
 import PropertyCard from "@/components/PropertyCard";
 import { getApprovedProperties } from "@/lib/api/properties";
+
 import React from "react";
 
 const Properties = async () => {
+
+ 
+
   const properties = await getApprovedProperties();
   return (
     <div>

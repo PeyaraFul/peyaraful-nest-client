@@ -2,8 +2,12 @@
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 //getting all properties for admin dashboard
-export const getProperties = async () => {
-  const response = await fetch(`${baseUrl}/api/properties`);
+export const getProperties = async (token) => {
+  const response = await fetch(`${baseUrl}/api/properties`,{
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
   const data = await response.json();
 
   return data;
@@ -25,27 +29,37 @@ export const getFeaturedProperties = async () => {
 };
 
 //getting a single property by property id for details page
-export const getProperty = async (propertyId) => {
-  const response = await fetch(`${baseUrl}/api/properties/${propertyId}`);
+export const getProperty = async (propertyId,token) => {
+  const response = await fetch(`${baseUrl}/api/properties/${propertyId}`,{
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+
   const data = await response.json();
 
   return data;
 };
 
 //getting a single property by owner id for my properties page
-export const getOwnerProperty = async (ownerId) => {
-  const response = await fetch(`${baseUrl}/api/properties/owner/${ownerId}`);
+export const getOwnerProperty = async (ownerId,token) => {
+  const response = await fetch(`${baseUrl}/api/properties/owner/${ownerId}`,{
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
   const data = await response.json();
 
   return data;
 };
 
 //creating a new property
-export const createProperty = async (data) => {
+export const createProperty = async (data, token) => {
   const response = await fetch(`${baseUrl}/api/properties`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   });
@@ -56,11 +70,12 @@ export const createProperty = async (data) => {
 };
 
 //updating a property
-export const updateProperty = async (id, propertyData) => {
+export const updateProperty = async (id, propertyData, token) => {
   const response = await fetch(`${baseUrl}/api/properties/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(propertyData),
   });
@@ -71,11 +86,12 @@ export const updateProperty = async (id, propertyData) => {
 };
 
 //adding reviews to a property
-export const addReviewProperty = async (id, propertyData) => {
+export const addReviewProperty = async (id, propertyData, token) => {
   const response = await fetch(`${baseUrl}/api/properties/review/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(propertyData),
   });
@@ -86,9 +102,12 @@ export const addReviewProperty = async (id, propertyData) => {
 };
 
 //deleting a property
-export const deleteProperty = async (id) => {
+export const deleteProperty = async (id, token) => {
   const response = await fetch(`${baseUrl}/api/properties/${id}`, {
     method: "DELETE",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
   });
 
   const result = await response.json();

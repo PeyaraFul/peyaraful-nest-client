@@ -68,7 +68,7 @@ export async function DashboardSidebar() {
     {
       icon: FaRegBookmark,
       label: "All Bookings",
-      href: "/dashboard/bookings",
+      href: "/dashboard/allBookings",
     },
     {
       icon: MdPayment,

@@ -11,11 +11,16 @@ const PropertyDetailPage = async ({ params }) => {
     headers: await headers(),
   });
 
+   const {token} = await auth.api.getToken({
+      headers: await headers()
+    })
+    // console.log(token)
+
   if (!session) {
     redirect("/login");
   }
 
-  const property = await getProperty(id);
+  const property = await getProperty(id, token);
 
   return <PropertyDetailsClient property={property} session={session} />;
 };

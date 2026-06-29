@@ -9,6 +9,9 @@ export default async function AllPropertyPage() {
     headers: await headers(),
   });
 
+  
+
+
   const admin = session?.user?.role;
   // console.log("ID", session.user.id);
 
