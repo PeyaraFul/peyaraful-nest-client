@@ -15,12 +15,6 @@
 
 ## ✨ Features
 
-### 👤 Authentication
-- Email & Password Authentication
-- Google Sign-In
-- JWT-based Secure Authentication
-- Protected Routes
-
 ### 🏠 Property Management
 - Owners can add rental properties
 - Update property information
@@ -46,23 +40,6 @@
 - Payment history
 - Booking confirmation after successful payment
 
-### 👨‍💼 Dashboard
-#### Admin
-- Manage all users
-- Approve or reject properties
-- View platform statistics
-
-#### Owner
-- Manage properties
-- View bookings
-- Track payment status
-
-#### Tenant
-- Browse approved properties
-- Book properties
-- Pay rent securely
-- View booking history
-
 ### 📱 Responsive Design
 - Mobile Friendly
 - Tablet Friendly
@@ -80,7 +57,6 @@
 - Tailwind CSS
 - HeroUI
 - React Hook Form
-- TanStack Query
 - Axios
 - Better Auth
 
