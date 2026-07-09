@@ -1,12 +1,12 @@
 # 🏡 Peyaraful Nest
 
-**Peyaraful Nest** is a modern full-stack rental property platform built with the MERN stack. It connects property owners and tenants through a secure, user-friendly system where owners can list rental properties, tenants can discover and book them, and administrators can manage the entire platform.
+**Peyaraful Nest** is a modern full-stack rental property platform built with the MERN stack. It connects property owners and tenants through a secure, user-friendly system where owners can add properties, tenants can discover and book them, and administrators can manage the entire platform.
 
 ---
 
 ## 🌐 Live Demo
 
-- **Client:** https://your-client-url.vercel.app
+- **Client:** https://peyaraful-nest-client.vercel.app
 
 
 > Replace the URLs above with your deployed links.
