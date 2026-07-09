@@ -188,19 +188,14 @@ Contributions are welcome!
 
 ---
 
-# 📄 License
-
-This project is licensed under the MIT License.
-
----
 
 # 👨‍💻 Developer
 
 **Md Akash**
 
-GitHub: https://github.com/your-github
+GitHub: https://github.com/PeyaraFul
 
-LinkedIn: https://linkedin.com/in/your-profile
+LinkedIn:  https://www.linkedin.com/in/md-akash-mia-bd/
 
 ---
 
